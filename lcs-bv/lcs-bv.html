@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LCS-BV</title>
+  <script type="text/javascript" language="JavaScript" src="lcs_bv.js"></script>
+<style>
+html, input[type="button"], textarea {
+  font-family: sans-serif;
+  font-size: 1.2em;
+}
+ins {
+	background:#b4ffb4;
+}
+del {
+	background:#ffb3b3;
+}
+#outputdiv {
+  font-size: 1.5em;
+}
+table.align {
+  border-collapse: collapse;
+}
+.align td {
+  border:  2px #999 solid;
+  text-align: center;
+  padding-left: 1.0em;
+  padding-right: 1.0em;
+}
+
+td.match {
+	background:#b4ffb4;
+}
+</style>
+</head>
+
+<body>
+<h1>Diff Align</h1>
+
+<script type="text/javascript" language="JavaScript">
+function example(i) {
+  if (i==1) {
+    document.getElementById('text1').innerHTML
+      = 'sue';
+    document.getElementById('text2').innerHTML
+      = 'use';    
+  }
+  else if (i==2) {
+    document.getElementById('text1').innerHTML
+      = 'gold';
+    document.getElementById('text2').innerHTML
+      = 'glow';    
+  }
+  else if (i==3) {
+    document.getElementById('text1').innerHTML
+      = 'eonnnnnicaio';
+    document.getElementById('text2').innerHTML
+      = 'communicato';    
+  }
+}
+
+function launch() {
+  var text1 = document.getElementById('text1').value;
+  var text2 = document.getElementById('text2').value;
+
+  var dmp = new lcs_bv();
+  dmp.Diff_Timeout = 0;
+
+  // No warmup loop since it risks triggering an 'unresponsive script' dialog
+  // in client-side JavaScript
+  var ms_start = (new Date()).getTime();
+  var lcs = dmp.LCS(text1, text2, false);
+  var ms_end = (new Date()).getTime();
+
+  var bpm = dmp.BPM(text1,text2);
+  
+  var dam = dmp.DAM(text1,text2);
+
+  //var ds = dmp.diff_prettyHtml(d);
+  
+  //document.getElementById('lcsinfo').innerHTML 
+  //	= lcs + '<br />';
+  	
+  document.getElementById('align').innerHTML 
+  //  = '<br /><table class="align">' + dmp.lcs2html(text1,text2,lcs) + '</table>';
+    = '<br /><table class="align">' + dmp.bpm2html(text1,text2,lcs) + '</table>';
+    
+  //document.getElementById('bpminfo').innerHTML 
+  //	= bpm + '<br />';
+  	    
+  document.getElementById('bpm').innerHTML 
+    = '<br /><table class="align">' + dmp.bpm2html(text1,text2,bpm) + '</table>';
+
+  //document.getElementById('daminfo').innerHTML 
+  //	= dam + '<br />';
+  	    
+  document.getElementById('dam').innerHTML 
+    = '<br /><table class="align">' + dmp.bpm2html(text1,text2,dam) + '</table>';
+
+}
+</script>
+
+<form action="#" onsubmit="return false">
+<p>
+  <input type="button" onClick="example('1')" value="sue/use">&nbsp;
+  <input type="button" onClick="example('2')" value="gold/glow">&nbsp;
+  <input type="button" onClick="example('3')" value="eonnnnnicaio/communicato">
+</p>
+<table width="50%"><tr>
+  <td width="50%">
+<h3>Text 1:</h3>
+<textarea id="text1" style="width: 100%" rows=1>Choerephon</textarea></td>
+  <td width="50%">
+<h3>Text 2:</h3>
+
+<textarea id="text2" style="width: 100%" rows=1>Chrerrplzon</textarea></td>
+</td></table>
+
+<p><input type="button" onClick="launch()" value="Compute Diff"></p>
+</form>
+
+<h2>LCS</h2>
+<!-- div id="lcsinfo"></div><br / -->
+<div id="align"></div><br />
+
+<h2>SES (Levenshtein)</h2>
+<!--div id="bpminfo"></div><br / -->
+<div id="bpm"></div><br />
+
+<h2>Damerau</h2>
+<!--div id="daminfo"></div><br / -->
+<div id="dam"></div><br />
+
+</body>
+</html>
+
